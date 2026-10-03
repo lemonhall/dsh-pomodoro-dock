@@ -1,0 +1,53 @@
+{
+  "name": "dsh-pomodoro-dock",
+  "version": "0.1.0",
+  "description": "DSH 右侧栏的番茄闹钟：25 分钟专注 / 5 分钟休息循环，计时在宿主侧（切 tab、关面板都不停），Agent 也能读状态和启停（pomodoro_panel 工具）。",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "icon.svg"
+  ],
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "dsh-bundle",
+    "deepseek-harness",
+    "pomodoro",
+    "timer",
+    "focus",
+    "sidebar"
+  ],
+  "author": "lemonhall",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lemonhall/dsh-pomodoro-dock.git"
+  },
+  "homepage": "https://github.com/lemonhall/dsh-pomodoro-dock#readme",
+  "bugs": {
+    "url": "https://github.com/lemonhall/dsh-pomodoro-dock/issues"
+  },
+  "meta": {
+    "title": "番茄闹钟",
+    "description": "右侧栏一个 tab：专注/休息循环计时，答案在宿主侧 —— 切 tab、关面板都不中断。"
+  },
+  "icon": "./icon.svg",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-sidebar-right"
+      ]
+    }
+  }
+}

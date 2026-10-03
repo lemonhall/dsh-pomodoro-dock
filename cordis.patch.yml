@@ -1,0 +1,32 @@
+# ============================================================================
+# dsh-pomodoro-dock —— DSH bundle patch
+# ============================================================================
+# 纯本地，不联网：状态存 $DSH_HOME/dsh-pomodoro-dock/state.json。
+#
+# 关键设计：**计时不靠 tick，只存 endsAt（结束时刻的毫秒时间戳）**。
+# 剩余时间 = endsAt - now，谁都能随时算出来。所以：
+#   - 宿主不需要定时器（进程闲着也不影响准确度）
+#   - 客户端刷新、切 tab、关掉侧栏、甚至重启应用，剩余时间都对
+#   - 暂停时把剩余毫秒存进 pausedRemainingMs，恢复时再换算成新的 endsAt
+#
+# 宿主半（lib/index.js）：
+#   GET/POST /dsh-pomodoro/state  读状态 / 发动作（action: start|pause|resume|reset|skip|config）
+#   + pomodoro_panel 工具（Agent 侧：看状态、启停、改时长）
+# 客户端半（lib/client.js）是右侧栏 tab：圆环倒计时 + 按钮 + 今日完成数。
+#
+# 安装：
+#   plugin_manager install_bundle  target=link:E:\development\dsh-pomodoro-dock
+# ⚠️ 客户端半边改动要重启应用；新增宿主路由也要重启（实测）。
+# ============================================================================
+
+- insert:
+    - id: dsh-pomodoro-dock
+      name: dsh-pomodoro-dock
+      config:
+        focusMinutes: 25
+        breakMinutes: 5
+        # 每完成几个专注后给一次长休息
+        longBreakMinutes: 15
+        roundsBeforeLongBreak: 4
+        # 本插件不弹系统通知（DSH 里没有这个口子），只做面板内提示
+        autoStartNext: false
